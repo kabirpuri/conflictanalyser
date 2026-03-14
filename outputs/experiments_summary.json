@@ -1,0 +1,23 @@
+{
+  "n_rows_used": 53,
+  "n_classes": 3,
+  "best_by_f1_weighted_cv": {
+    "test_name": "RF_categorical_only",
+    "accuracy_mean": 0.4349090909090909,
+    "accuracy_std": 0.15265539434126654,
+    "f1_weighted_mean": 0.4230751894570076,
+    "f1_weighted_std": 0.15238079417259984
+  },
+  "rf_holdout_metrics": {
+    "holdout_accuracy": 0.5714285714285714,
+    "holdout_weighted_f1": 0.49230769230769234
+  },
+  "plots_generated": [
+    "outputs/plots/class_distribution.png",
+    "outputs/plots/model_comparison.png",
+    "outputs/plots/confusion_matrix_rf.png",
+    "outputs/plots/top15_feature_importance_rf.png",
+    "outputs/plots/conflict_factor_ranking.png",
+    "outputs/plots/conflict_factor_weights.png"
+  ]
+}

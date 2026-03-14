@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Conflict Analyser</title>
+    <style>
+      :root {
+        --bg: #0b1220;
+        --card: #121a2b;
+        --line: #243251;
+        --text: #e8eefc;
+        --muted: #aab6d3;
+        --accent: #4ea1ff;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: radial-gradient(circle at top left, #13203d 0%, var(--bg) 55%);
+        color: var(--text);
+        font-family: Inter, Arial, sans-serif;
+      }
+      .wrap {
+        width: min(1200px, 92%);
+        margin: 1.5rem auto 2rem;
+      }
+      .card {
+        background: rgba(18, 26, 43, 0.94);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 1rem 1.15rem;
+        margin-bottom: 1rem;
+      }
+      h1, h2 { margin: 0.2rem 0 0.6rem; }
+      p, li { color: var(--muted); line-height: 1.45; }
+      .btn {
+        display: inline-block;
+        text-decoration: none;
+        border-radius: 8px;
+        padding: 0.62rem 0.9rem;
+        font-weight: 700;
+        margin-right: 0.45rem;
+      }
+      .btn.primary { background: linear-gradient(120deg, #3f8cff, #5ab0ff); color: #031125; }
+      .btn.secondary { background: #1b2a44; color: #d7e4ff; border: 1px solid #2f4061; }
+      iframe {
+        width: 100%;
+        height: 78vh;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #fff;
+      }
+      code {
+        background: #1a2741;
+        border: 1px solid #2b3b5d;
+        border-radius: 6px;
+        padding: 0.08rem 0.3rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="card">
+        <h1>Conflict Analyser</h1>
+        <p>
+          AI-enabled construction conflict severity analysis with built-in reporting.
+          This GitHub Pages site is the public frontend.
+        </p>
+        <p>
+          Backend app URL (edit this in <code>index.html</code> after deployment):
+          <code id="backend-url-label"></code>
+        </p>
+        <a id="open-backend" class="btn primary" target="_blank" rel="noopener">Open Full App</a>
+        <a href="https://github.com/" class="btn secondary" target="_blank" rel="noopener">Project Repository</a>
+      </div>
+
+      <div class="card">
+        <h2>Live App Preview</h2>
+        <iframe id="app-frame" title="Conflict analyser app"></iframe>
+      </div>
+    </div>
+
+    <script>
+      // Replace after backend deployment, for example:
+      // const BACKEND_URL = "https://conflict-analyser-backend.onrender.com";
+      const BACKEND_URL = "https://conflict-analyser-backend.onrender.com";
+
+      document.getElementById("backend-url-label").textContent = BACKEND_URL;
+      document.getElementById("open-backend").href = BACKEND_URL;
+      document.getElementById("app-frame").src = BACKEND_URL;
+    </script>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+{
+  "total_rows": 53,
+  "usable_rows": 53,
+  "likert_non_null_ratio": 0.0,
+  "model_accuracy": 0.5714,
+  "model_weighted_f1": 0.4923
+}
