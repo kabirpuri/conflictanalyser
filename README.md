@@ -1,140 +1,162 @@
-# Construction Conflict Modeling Pipeline
+# Construction Conflict Analyzer (Beginner Guide)
 
-This repository contains a reproducible pipeline to model construction conflict severity from the available CSV files:
+This project gives you a simple website to run conflict analysis on CSV files.
+You do **not** need GitHub or coding experience to use it locally.
 
-- `Cleaned_Construction_Conflict_Survey_Data.csv`
-- `Conflict_Factor_Statistics_Final.csv`
+---
 
-## What the pipeline does
+## What this app does
 
-`conflict_model_pipeline.py` performs:
+- Upload your survey CSV
+- Run multiple model tests automatically
+- Generate plots for report/thesis
+- Show a full theory + methodology + result report page
+- Let you download everything as one ZIP
 
-1. Data cleaning and normalization
-2. Conflict severity label mapping to numeric classes (`Low=1`, `Medium=2`, `High=3`)
-3. Feature engineering using:
-   - Categorical one-hot features (`Role`, `Experience`, `Project_Sector`)
-   - TF-IDF text features (`Trigger_Event`, `Conflict_Progression`, `Hidden_Factors`, `Additional_Comments`)
-4. Random Forest classification
-5. Export of model metrics and top feature importances
+---
 
-## Run
+## Before you start (one-time setup)
+
+You only need a terminal and internet for package install.
+
+### 1) Open terminal in this project folder
+
+If your folder is:
+
+`/home/kabirpuri/Downloads/bansi_project`
+
+run:
 
 ```bash
-python3 conflict_model_pipeline.py
+cd /home/kabirpuri/Downloads/bansi_project
 ```
 
-If dependencies are missing in your system Python, install them locally in this repo:
+### 2) Install required packages (one-time)
 
-```bash
-mkdir -p vendor
-pip3 install --target ./vendor scikit-learn scipy
-```
-
-## Output files
-
-The script writes outputs to `outputs/`:
-
-- `survey_cleaned_for_model.csv`
-- `model_metrics.json`
-- `classification_report.txt`
-- `top_feature_importance.csv`
-- `conflict_factor_stats_with_weights.csv` (if factor statistics file exists)
-
-## Important data note
-
-In the current `Cleaned_Construction_Conflict_Survey_Data.csv`, all 11 Likert factor columns are empty.  
-So this pipeline uses demographics + text responses for severity modeling.  
-If you later restore row-level Likert values, the script can be extended to include factor-level predictive modeling and CRI at respondent level.
-
-## Simple website for anyone to use
-
-A simple upload-and-run web interface is included in `web_app.py`.
-
-### Install local dependencies
+Copy-paste this exactly:
 
 ```bash
 mkdir -p vendor
-pip3 install --target ./vendor scikit-learn scipy matplotlib flask
+pip3 install --target ./vendor -r requirements.txt
 ```
 
-### Standard setup (recommended for GitHub users)
+If `pip3` is missing:
 
 ```bash
-pip3 install -r requirements.txt
+sudo apt update
+sudo apt install -y python3-pip
 ```
 
-### Run website
+Then run the install command again.
+
+---
+
+## Run the website (every time)
+
+From the same project folder:
 
 ```bash
 python3 web_app.py
 ```
 
-If port 8000 is already in use:
+If you get "port already in use", run:
 
 ```bash
-PORT=8001 python3 web_app.py
+PORT=8020 python3 web_app.py
 ```
 
-Open `http://localhost:8000` and:
-1. Upload survey CSV (required)
-2. Upload factor-statistics CSV (optional)
-3. Click **Run Analysis**
-4. Download the ZIP with plots/tables/metrics
-5. Open the built-in full report page (theory + methods + benchmark + plots)
+Now open your browser and go to:
 
-Each run is isolated in `web_runs/<job_id>/` so multiple users can run separate analyses.
+- `http://127.0.0.1:8000`  
+or, if you used custom port:
+- `http://127.0.0.1:8020`
 
-## Host on `conflictanalyser.github.io`
+---
 
-Important: GitHub Pages cannot run Python/Flask directly.  
-Use this architecture:
+## How to use the website
 
-- `conflictanalyser.github.io` -> static frontend (`index.html` in this repo)
-- Render free web service -> Flask backend (`web_app.py`)
+1. Open the page in browser.
+2. In **Survey CSV (required)**, upload your survey file.
+3. In **Factor Statistics CSV (optional)**, upload factor stats file.
+4. Click **Run Full Analysis**.
+5. Wait until results page appears.
+6. Use:
+   - **Download All Outputs (ZIP)**
+   - **Open Full Report**
+   - **Download Report (Markdown)**
 
-### 1) Push this repo to GitHub user-site repository
+---
 
-Create a repository named exactly:
+## Where output files are saved
 
-`conflictanalyser.github.io`
+Each run is saved in a separate folder:
 
-Then push:
+- `web_runs/<job_id>/outputs/`
+
+Important files inside:
+
+- `model_test_results_cv.csv`
+- `experiments_summary.json`
+- `analysis_report.md`
+- `plots/*.png`
+
+---
+
+## If you just want to run scripts (without website)
+
+From project folder:
 
 ```bash
-git remote add origin https://github.com/conflictanalyser/conflictanalyser.github.io.git
-git push -u origin main
+python3 conflict_model_pipeline.py
+python3 run_experiments_and_plots.py
 ```
 
-### 2) Enable GitHub Pages
+This writes outputs to:
 
-In repository settings:
+- `outputs/`
 
-- Pages -> Build and deployment -> Deploy from branch
-- Branch: `main`
-- Folder: `/ (root)`
+---
 
-Your frontend URL becomes:
+## Common problems and quick fixes
 
-`https://conflictanalyser.github.io`
+### Problem: `python3: command not found`
 
-### 3) Deploy backend on Render (free)
+Install Python:
 
-- Create a new Web Service from this same GitHub repo
-- Render will detect `render.yaml` (or use below commands)
-- Build command: `pip install -r requirements.txt`
-- Start command: `gunicorn --bind 0.0.0.0:$PORT web_app:app`
-
-After deploy, you get a backend URL like:
-
-`https://conflict-analyser-backend.onrender.com`
-
-### 4) Connect frontend to backend
-
-In `index.html`, update:
-
-```js
-const BACKEND_URL = "https://your-render-url.onrender.com";
+```bash
+sudo apt update
+sudo apt install -y python3
 ```
 
-Commit and push again.  
-Now `https://conflictanalyser.github.io` will show your branded frontend and embed/open the live analyzer app.
+### Problem: package import errors (`flask`, `sklearn`, etc.)
+
+Run again:
+
+```bash
+mkdir -p vendor
+pip3 install --target ./vendor -r requirements.txt
+```
+
+### Problem: website does not open
+
+1. Check terminal is still running.
+2. Use a different port:
+
+```bash
+PORT=8030 python3 web_app.py
+```
+
+3. Open `http://127.0.0.1:8030`.
+
+### Problem: stop the running website
+
+In the terminal where app is running, press:
+
+`Ctrl + C`
+
+---
+
+## Data note
+
+Current included file `Cleaned_Construction_Conflict_Survey_Data.csv` has empty row-level Likert factor columns.
+So the model currently learns mainly from demographics + text fields for severity prediction.
